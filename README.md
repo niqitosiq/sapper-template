@@ -143,3 +143,9 @@ function doSomething() {
 
 I love contributions! I will happily accept your pull request! Your ideas might come in handy.
 If you find grammar errors, please correct me!
+
+## Used by this sites:
+- http://niqitosiq.ru
+- http://assol.jaex.ru
+
+If you used this template, please make pull request with link for it!
