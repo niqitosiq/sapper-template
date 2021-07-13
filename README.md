@@ -20,9 +20,8 @@ I use this template for landing pages and high-performance projects, but it's ea
 
 ## Usage
 
-```
-command will be here
-```
+Click the "Use this template" button on the top of repository. Or just clone it and gelete .git folder :) 
+I'll make it more comfortable in the future!
 
 ## Aliases
 
