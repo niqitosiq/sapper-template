@@ -13,6 +13,8 @@ import sveltePreprocess from 'svelte-preprocess';
 import seqPreprocessor from 'svelte-sequential-preprocessor';
 import svgicons from 'rollup-plugin-svg-icons';
 import optimizeImages from './plugins/optimizeImages';
+import json from '@rollup/plugin-json';
+import alias from '@rollup/plugin-alias';
 
 const preprocess = seqPreprocessor([
   sveltePreprocess({
@@ -21,9 +23,33 @@ const preprocess = seqPreprocessor([
   }),
 ]);
 
+const aliases = alias({
+  entries: [
+    {
+      find: '@',
+      replacement: path.resolve(projectRootDir, 'src'),
+    },
+    {
+      find: '@ui',
+      replacement: path.resolve(projectRootDir, 'src/components/ui'),
+    },
+    {
+      find: '@consts',
+      replacement: path.resolve(projectRootDir, 'src/consts'),
+    },
+    {
+      find: '@styles',
+      replacement: path.resolve(projectRootDir, 'src/styles'),
+    },
+    {
+      find: '@directives',
+      replacement: path.resolve(projectRootDir, 'src/directives'),
+    },
+  ],
+});
+
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
-const optimize = process.env.OPTIMIZE == 'true';
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
 
 const onwarn = (warning, onwarn) => {
@@ -42,6 +68,8 @@ export default {
     input: config.client.input(),
     output: config.client.output(),
     plugins: [
+      aliases,
+
       replace({
         'process.browser': true,
         'process.env.NODE_ENV': JSON.stringify(mode),
@@ -52,7 +80,7 @@ export default {
         hydratable: true,
         emitCss: true,
         preprocess,
-        css: css => {
+        css: (css) => {
           css.write('static/bundle.css');
         },
       }),
@@ -124,6 +152,10 @@ export default {
     input: config.server.input(),
     output: config.server.output(),
     plugins: [
+      aliases,
+
+      json(),
+
       replace({
         'process.browser': false,
         'process.env.NODE_ENV': JSON.stringify(mode),
@@ -135,7 +167,7 @@ export default {
         emitCss: true,
         dev,
         preprocess,
-        css: css => {
+        css: (css) => {
           css.write('static/bundle.css');
         },
       }),
@@ -157,7 +189,7 @@ export default {
         include: './src/components/background/circles/*.svg',
       }),
 
-      optimize && optimizeImages(),
+      optimizeImages(),
     ],
     external: Object.keys(pkg.dependencies).concat(
       require('module').builtinModules,

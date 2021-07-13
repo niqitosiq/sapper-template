@@ -1,152 +1,146 @@
-# sapper-template
+# Sapper SEO-optimized template
 
-The default template for setting up a [Sapper](https://github.com/sveltejs/sapper) project. Can use either Rollup or webpack as bundler.
+Fully-preconfigured Sapper template for get 100-score on google-page-speed and acceleration of development.
+I use this template for landing pages and high-performance projects, but it's easy to customize for any task.
 
+## Roadmap
 
-## Getting started
+- [x] Aliases
+- [x] ESLint + Prettier
+- [x] Image-minimizing preconfigured
+- [x] PNG -> WEBP configured
+- [ ] Lazy-loading images
+- [x] Base UI-elements ready for customizing
+- [x] SVG icons preconfigured
+- [x] SCSS mixins for adding custom fonts
+- [x] Normalize.scss
+- [x] PostCss preconfigured
+- [x] Mixins for viewport usage
+- [ ] Tests
 
+## Usage
 
-### Using `degit`
-
-To create a new Sapper project based on Rollup locally, run
-
-```bash
-npx degit "sveltejs/sapper-template#rollup" my-app
+```
+command will be here
 ```
 
-For a webpack-based project, instead run
+## Aliases
 
-```bash
-npx degit "sveltejs/sapper-template#webpack" my-app
+Use preconfigured aliases:
+
+```
+@ -> src
+@ui -> src/components/ui
+@consts -> src/consts
+@styles -> src/styles
+@directives -> src/directives
 ```
 
-[`degit`](https://github.com/Rich-Harris/degit) is a scaffolding tool that lets you create a directory from a branch in a repository.
+For customizing, check `/rollup.config.js`
 
-Replace `my-app` with the path where you wish to create the project.
+## Image-minimizing && PNG -> WEBP configured
 
+For minifying your image, save it into `/src/images`. If you doesn't want to process images, save it to `/static` folder.
+Save `png` and `jpeg` here and custom plugin will generate `webp`, `png`, `jpeg` kit for use by Svelte component (`@ui/Image.svelte`).
+For customize plugin config, see `/plugins/optimizeImages.js`.
 
-### Using GitHub templates
+## Base UI-elements ready for customizing
 
-Alternatively, you can create the new project as a GitHub repository using GitHub's template feature.
+Use components:
 
-Go to either [sapper-template-rollup](https://github.com/sveltejs/sapper-template-rollup) or [sapper-template-webpack](https://github.com/sveltejs/sapper-template-webpack) and click on "Use this template" to create a new project repository initialized by the template.
+- Menu burger
+- Button
 
+## SVG icons preconfigured
 
-### Running the project
+Save your SVG icons into `/src/icons`, it will processed into svg bundle, which can be used by `@ui/Icon.svelte`
 
-Once you have created the project, install dependencies and run the project in development mode:
+In folder:
 
-```bash
-cd my-app
-npm install # or yarn
-npm run dev
+```
+- src/icons
+-- heart.svg
 ```
 
-This will start the development server on [localhost:3000](http://localhost:3000). Open it and click around.
+In Svelte component:
 
-You now have a fully functional Sapper project! To get started developing, consult [sapper.svelte.dev](https://sapper.svelte.dev).
+```
+<script>
+import Icon from '@ui/Icon.svelte';
+</script>
 
-### Using TypeScript
+<div class="heart-icon">
+  <Icon name="heart" />
+</div>
 
-By default, the template uses plain JavaScript. If you wish to use TypeScript instead, you need some changes to the project:
-
- * Add `typescript` as well as typings as dependences in `package.json`
- * Configure the bundler to use [`svelte-preprocess`](https://github.com/sveltejs/svelte-preprocess) and transpile the TypeScript code.
- * Add a `tsconfig.json` file
- * Update the project code to TypeScript
-
-The template comes with a script that will perform these changes for you by running
-
-```bash
-node scripts/setupTypeScript.js
+<style lang="scss">
+.heart-icon {
+  :global(svg) {
+    fill: #000 // Configure svg parameters by css. You can use transitions or animations and change all css properties.
+  }
+}
+</style>
 ```
 
-`@sapper` dependencies are resolved through `src/node_modules/@sapper`, which is created during the build. You therefore need to run or build the project once to avoid warnings about missing dependencies.
+## SCSS mixins for adding custom fonts
 
-The script does not support webpack at the moment.
+1. Add font in multiple formats into `/static/fonts/`;
+2. Use font-mixins placed in `/src/styles/_fonts.scss` for add custom fonts.
+   Usage:
 
-## Directory structure
-
-Sapper expects to find two directories in the root of your project —  `src` and `static`.
-
-
-### src
-
-The [src](src) directory contains the entry points for your app — `client.js`, `server.js` and (optionally) a `service-worker.js` — along with a `template.html` file and a `routes` directory.
-
-
-#### src/routes
-
-This is the heart of your Sapper app. There are two kinds of routes — *pages*, and *server routes*.
-
-**Pages** are Svelte components written in `.svelte` files. When a user first visits the application, they will be served a server-rendered version of the route in question, plus some JavaScript that 'hydrates' the page and initialises a client-side router. From that point forward, navigating to other pages is handled entirely on the client for a fast, app-like feel. (Sapper will preload and cache the code for these subsequent pages, so that navigation is instantaneous.)
-
-**Server routes** are modules written in `.js` files, that export functions corresponding to HTTP methods. Each function receives Express `request` and `response` objects as arguments, plus a `next` function. This is useful for creating a JSON API, for example.
-
-There are three simple rules for naming the files that define your routes:
-
-* A file called `src/routes/about.svelte` corresponds to the `/about` route. A file called `src/routes/blog/[slug].svelte` corresponds to the `/blog/:slug` route, in which case `params.slug` is available to the route
-* The file `src/routes/index.svelte` (or `src/routes/index.js`) corresponds to the root of your app. `src/routes/about/index.svelte` is treated the same as `src/routes/about.svelte`.
-* Files and directories with a leading underscore do *not* create routes. This allows you to colocate helper modules and components with the routes that depend on them — for example you could have a file called `src/routes/_helpers/datetime.js` and it would *not* create a `/_helpers/datetime` route.
-
-
-#### src/node_modules/images
-
-Images added to `src/node_modules/images` can be imported into your code using `import 'images/<filename>'`. They will be given a dynamically generated filename containing a hash, allowing for efficient caching and serving the images on a CDN.
-
-See [`index.svelte`](src/routes/index.svelte) for an example.
-
-
-#### src/node_modules/@sapper
-
-This directory is managed by Sapper and generated when building. It contains all the code you import from `@sapper` modules.
-
-
-### static
-
-The [static](static) directory contains static assets that should be served publicly. Files in this directory will be available directly under the root URL, e.g. an `image.jpg` will be available as `/image.jpg`.
-
-The default [service-worker.js](src/service-worker.js) will preload and cache these files, by retrieving a list of `files` from the generated manifest:
-
-```js
-import { files } from '@sapper/service-worker';
+```
+@include font-face(
+  MuseoSansCyrl,
+  '/fonts/MuseoSansCyrl-Bold', // font link
+  700, // weight
+  normal, // style
+  woff2 woff eot ttf // formats of font files
+);
 ```
 
-If you have static files you do not want to cache, you should exclude them from this list after importing it (and before passing it to `cache.addAll`).
+## PostCss preconfigured
 
-Static files are served using [sirv](https://github.com/lukeed/sirv).
+See config file in `/config/postcss.config.js`
 
+## Mixins for viewport usage
 
-## Bundler configuration
+Use `@directives/inViewport.js` for adding custom animations and other logic by enter in viewPort.
+Usage for adding class:
 
-Sapper uses Rollup or webpack to provide code-splitting and dynamic imports, as well as compiling your Svelte components. With webpack, it also provides hot module reloading. As long as you don't do anything daft, you can edit the configuration files to add whatever plugins you'd like.
+```
+<script>
+import { viewClass } from '@directives/inViewport';
+</script>
 
+<div class="block" use:viewClass>
+</div>
 
-## Production mode and deployment
-
-To start a production version of your app, run `npm run build && npm start`. This will disable live reloading, and activate the appropriate bundler plugins.
-
-You can deploy your application to any environment that supports Node 10 or above. As an example, to deploy to [Vercel Now](https://vercel.com) when using `sapper export`, run these commands:
-
-```bash
-npm install -g vercel
-vercel
+<style lang="scss">
+.block {
+  transition: opacity ease .3s;
+  opacity: 0;
+  &.animate { // this class will be added when element reachs viewport;
+    opacity: 1; // change css-properties for animating;
+    /* I prefer to do this in separated file (@styles/animation.scss), but this is a matter of taste. */
+  }
+}
 ```
 
-If your app can't be exported to a static site, you can use the [now-sapper](https://github.com/thgh/now-sapper) builder. You can find instructions on how to do so in its [README](https://github.com/thgh/now-sapper#basic-usage).
+Usage for handling function:
 
+```
+<script>
+import { viewport } from '@directives/inViewport';
+function doSomething() {
+  // do something...
+}
+</script>
 
-## Using external components
-
-When using Svelte components installed from npm, such as [@sveltejs/svelte-virtual-list](https://github.com/sveltejs/svelte-virtual-list), Svelte needs the original component source (rather than any precompiled JavaScript that ships with the component). This allows the component to be rendered server-side, and also keeps your client-side app smaller.
-
-Because of that, it's essential that the bundler doesn't treat the package as an *external dependency*. You can either modify the `external` option under `server` in [rollup.config.js](rollup.config.js) or the `externals` option in [webpack.config.js](webpack.config.js), or simply install the package to `devDependencies` rather than `dependencies`, which will cause it to get bundled (and therefore compiled) with your app:
-
-```bash
-npm install -D @sveltejs/svelte-virtual-list
+<div class="block" use:viewport on:enterViewport={doSomething}>
+</div>
 ```
 
+## Contributing
 
-## Bugs and feedback
-
-Sapper is in early development, and may have the odd rough edge here and there. Please be vocal over on the [Sapper issue tracker](https://github.com/sveltejs/sapper/issues).
+I love contributions! I will happily accept your pull request! Your ideas might come in handy.
+If you find grammar errors, please correct me!

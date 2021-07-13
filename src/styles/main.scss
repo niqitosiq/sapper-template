@@ -2,43 +2,9 @@
 @import './fonts';
 @import './animation';
 
-@include font-face(
-  MuseoSansCyrl,
-  '/fonts/MuseoSansCyrl-Bold',
-  700,
-  normal,
-  woff2 woff eot ttf
-);
-
-@include font-face(
-  MuseoSansCyrl,
-  '/fonts/MuseoSansCyrl-Medium',
-  500,
-  normal,
-  woff2 woff eot ttf
-);
-
-@include font-face(
-  MuseoSansCyrl,
-  '/fonts/MuseoSansCyrl-Regular',
-  300,
-  normal,
-  woff2 woff eot ttf
-);
-
 // Variables
 :root {
   --accent: #de031c;
-  --accent-light: #fc6a6a;
-
-  --gradient: linear-gradient(184.46deg, #fc6a6a 3.39%, #c93f3f 96.19%);
-
-  --white: #ffffff;
-
-  --text-dark: #292929;
-  --text-gray: #575757;
-  --text-dark-transparent: rgba(41, 41, 41, 0.5);
-
   --container-width: 1246px;
 }
 
