@@ -1,8 +1,7 @@
 <script>
 </script>
 
-<div class="index">
-</div>
+<div class="index" />
 
 <style lang="scss">
 </style>

@@ -22,10 +22,10 @@ export default function optimizeImages({
       const imageMins = [];
 
       imageMins.push(
-        imagemin([`${images}/**/*.png`], {
-          plugins: [imageminWebp({ quality: 90 })],
-        }).then(files =>
-          files.forEach(async v => {
+        imagemin([`${images}/**/*.{jpg,png}`], {
+          plugins: [imageminWebp({ quality: 95 })],
+        }).then((files) =>
+          files.forEach(async (v) => {
             let source = path.parse(v.sourcePath);
             v.destinationPath = `${source.dir.replace(images, staticFolder)}/${
               source.name
@@ -49,11 +49,11 @@ export default function optimizeImages({
               progressive: true,
             }),
             imageminMozjpeg({
-              quality: 90,
+              quality: 95,
             }),
           ],
-        }).then(files =>
-          files.forEach(async v => {
+        }).then((files) =>
+          files.forEach(async (v) => {
             let source = path.parse(v.sourcePath);
             v.destinationPath = `${source.dir.replace(images, staticFolder)}/${
               source.name

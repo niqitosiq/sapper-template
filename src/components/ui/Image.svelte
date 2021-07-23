@@ -1,12 +1,12 @@
 <script>
-  export let alt = '';
-  export let src = '';
+  export let alt = ''
+  export let src = ''
 
-  const extension = src.split('.').pop();
-  const filePath = src.split(extension)[0];
+  const extension = src.split('.').pop()
+  const filePath = src.split(extension)[0]
 
-  const srcSet = src;
-  const srcsetWebp = extension === 'png' ? filePath + 'webp' : null;
+  const srcSet = src
+  const srcsetWebp = filePath + 'webp'
 </script>
 
 <div class="wrapper">

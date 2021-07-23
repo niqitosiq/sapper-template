@@ -23,6 +23,8 @@ const preprocess = seqPreprocessor([
   }),
 ]);
 
+const projectRootDir = path.resolve(__dirname);
+
 const aliases = alias({
   entries: [
     {
